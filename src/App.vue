@@ -1,6 +1,5 @@
 <template>
     <div id="app">
-        <!-- <HelloWorld msg="Welcome to Your Vue.js App"/> -->
         <!-- <div>
         Score
         Rules
@@ -13,28 +12,38 @@
 
         Play Again
         </div> -->
-        <Header  score="3" />
+        <Header score="3" />
         <div class="attribution">
             Challenge by <a href="https://www.frontendmentor.io?ref=challenge" target="_blank">Frontend Mentor</a>. 
             Coded by <a href="#">Your Name Here</a>.
         </div>
+        <RulesPage v-bind:is-open="isModalOpen" />
     </div>
 </template>
 
 <script>
 import Header from './components/Header.vue'
+import RulesPage from './components/RulesPage.vue'
 
 export default {
     name: 'App',
     components: {
-        Header
-    }
+        Header,
+        RulesPage
+    },
+    data: () => ({
+            isModalOpen: false,
+            score: 3
+        })
 }
 </script>
 
 <style>
-    body {
-        margin: 0;  
+    body, h1, h2, h3, h4, p, button {
+        margin: 0;
+        background: none;
+        box-shadow: none;
+        border: none;
     }
 
     #app {

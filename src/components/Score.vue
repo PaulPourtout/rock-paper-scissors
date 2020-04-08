@@ -1,7 +1,7 @@
 <template>
     <div class="container">
         <p class="text">score</p>
-        <p class="text score">{{score.score}}</p>
+        <p class="text score">{{score}}</p>
     </div>
 </template>
 

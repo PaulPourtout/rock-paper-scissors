@@ -1,8 +1,8 @@
-<template v-if={isOpen}>
-    <div class="container">
+<template>
+    <div v-if="isOpen" class="container">
         <p>Rules</p>
         <img src="../assets/image-rules.svg" alt="">
-        <button>
+        <button v-on:click="handleClose">
             <img src="../assets/icon-close.svg" alt="">
         </button>
     </div>
@@ -12,7 +12,8 @@
     export default {
         name: "RulesPage",
         props: {
-            isOpen: Boolean
+            isOpen: Boolean,
+            handleClose: Function
         }
     }
 </script>

@@ -1,9 +1,6 @@
 <template>
     <div id="app">
         <!-- <div>
-        Score
-        Rules
-
         You Picked
         The House Picked
 
@@ -12,29 +9,50 @@
 
         Play Again
         </div> -->
-        <Header score="3" />
+        <Header v-bind:score="score" />
+
+        <GameArea />
+
+        <Button
+            label="Rules"
+            variant="secondary"
+            v-bind:handle-click="handleToggleClick"
+        />
+        <RulesPage
+            v-bind:is-open="isModalOpen"
+            v-bind:handle-close="handleToggleClick"
+        />
         <div class="attribution">
             Challenge by <a href="https://www.frontendmentor.io?ref=challenge" target="_blank">Frontend Mentor</a>. 
             Coded by <a href="#">Your Name Here</a>.
         </div>
-        <RulesPage v-bind:is-open="isModalOpen" />
     </div>
 </template>
 
 <script>
-import Header from './components/Header.vue'
-import RulesPage from './components/RulesPage.vue'
+import Button from './components/Button.vue';
+import Header from './components/Header.vue';
+import RulesPage from './components/RulesPage.vue';
+import GameArea from './components/GameArea.vue';
 
 export default {
     name: 'App',
     components: {
         Header,
-        RulesPage
+        RulesPage,
+        Button,
+        GameArea
     },
     data: () => ({
             isModalOpen: false,
-            score: 3
-        })
+            score: 5
+    }),
+    methods: {
+        handleToggleClick: function () {
+            this.isModalOpen = !this.isModalOpen;
+        }
+
+    }
 }
 </script>
 
@@ -55,6 +73,9 @@ export default {
         background: radial-gradient(hsl(214, 47%, 23%), hsl(237, 49%, 15%));
         height: 100vh;
         color: #2c3e50;
+        /* display: flex;
+        flex-direction: column;
+         */
     }
 
     .attribution {

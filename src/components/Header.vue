@@ -6,7 +6,7 @@
                 src="../assets/logo.svg"
                 alt="Logo Rock Paper Scissors"
             >
-            <Score v-bind:score={score} />
+            <Score v-bind:score="score" />
         </div>
     </header>
 </template>

@@ -1,6 +1,6 @@
 <template>
     <header>
-        <div id="container">
+        <div class="header-container">
             <img
                 id="logo"
                 src="../assets/logo.svg"
@@ -25,11 +25,11 @@
     }
 </script>
 
-<style>
+<style >
     header {
-        padding: 1rem;
+        padding: 2rem;
     }
-    #container {
+    .header-container {
         border: 3px solid hsl(217, 16%, 45%);
         border-radius: 5px;
         padding: 1rem;

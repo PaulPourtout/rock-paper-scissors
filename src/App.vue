@@ -10,14 +10,17 @@
         Play Again
         </div> -->
         <Header v-bind:score="score" />
+        <div class="main-zone">
+            <GameArea />
+        </div>
 
-        <GameArea />
-
-        <Button
-            label="Rules"
-            variant="secondary"
-            v-bind:handle-click="handleToggleClick"
-        />
+        <div class="rules-bnt-container">
+            <Button
+                label="Rules"
+                variant="secondary"
+                v-bind:handle-click="handleToggleClick"
+            />
+        </div>
         <RulesPage
             v-bind:is-open="isModalOpen"
             v-bind:handle-close="handleToggleClick"
@@ -73,18 +76,24 @@ export default {
         background: radial-gradient(hsl(214, 47%, 23%), hsl(237, 49%, 15%));
         height: 100vh;
         color: #2c3e50;
-        /* display: flex;
+        display: flex;
         flex-direction: column;
-         */
+    }
+
+    .main-zone {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .rules-bnt-container {
+        margin: 1rem 0;
     }
 
     .attribution {
         font-size: 11px;
-        text-align: center;
-        position: absolute;
-        bottom: 5px;
-        left: 0;
-        right: 0;
+        margin: 1rem 0;
     }
 
     .attribution a {

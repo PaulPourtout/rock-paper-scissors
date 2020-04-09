@@ -2,6 +2,7 @@
     <button
         v-on:click="handleClick"
         class="button secondary"
+        v-bind:class="{primary: variant === 'primary', secondary: variant === 'secondary'}"
     >
         {{label}}
     </button>
@@ -13,6 +14,7 @@
         props: {
             label: String,
             variant: {
+                default: "secondary",
                 validator: function(value) {
                     return ["primary", "secondary"].indexOf(value) !== -1
                 }
@@ -33,6 +35,7 @@
         background-color: #FFF;
         border: 0.1rem solid red;
         border-radius: 5px;
+        font-weight: 400;
     }
     
     .secondary {

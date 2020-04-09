@@ -11,7 +11,9 @@
         </div> -->
         <Header v-bind:score="score" />
         <div class="main-zone">
-            <GameArea />
+            <GameArea
+                v-bind:set-score="setScore"
+            />
         </div>
 
         <div class="rules-bnt-container">
@@ -33,30 +35,32 @@
 </template>
 
 <script>
-import Button from './components/Button.vue';
-import Header from './components/Header.vue';
-import RulesPage from './components/RulesPage.vue';
-import GameArea from './components/GameArea.vue';
+    import Button from './components/Button.vue';
+    import Header from './components/Header.vue';
+    import RulesPage from './components/RulesPage.vue';
+    import GameArea from './components/GameArea.vue';
 
-export default {
-    name: 'App',
-    components: {
-        Header,
-        RulesPage,
-        Button,
-        GameArea
-    },
-    data: () => ({
-            isModalOpen: false,
-            score: 5
-    }),
-    methods: {
-        handleToggleClick: function () {
-            this.isModalOpen = !this.isModalOpen;
+    export default {
+        name: 'App',
+        components: {
+            Header,
+            RulesPage,
+            Button,
+            GameArea
+        },
+        data: () => ({
+                isModalOpen: false,
+                score: 0
+        }),
+        methods: {
+            handleToggleClick: function () {
+                this.isModalOpen = !this.isModalOpen;
+            },
+            setScore: function (increase) {
+                this.score = increase ? this.score + 1 : this.score - 1;
+            }
         }
-
     }
-}
 </script>
 
 <style>

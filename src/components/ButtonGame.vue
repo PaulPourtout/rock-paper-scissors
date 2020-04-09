@@ -1,12 +1,18 @@
 <template>
-    <button
-        class="button"
-        v-bind:class="{rock: type === 'rock', paper: type === 'paper', scissors: type === 'scissors'}"
-    >
-        <div class="button-content">
-            <img v-bind:src="require('@/assets/icon-' + type + '.svg')" alt="" />
+    <div>
+        <button
+            v-if="type"
+            class="button"
+            v-bind:class="{rock: type === 'rock', paper: type === 'paper', scissors: type === 'scissors', disabled: disabled}"
+            v-on:click="onClick"
+        >
+            <div class="button-content">
+                <img v-bind:src="require('@/assets/icon-' + type + '.svg')" alt="" />
+            </div>
+        </button>
+        <div v-else class="empty-type-button">
         </div>
-    </button>
+    </div>
 </template>
 
 <script>
@@ -14,9 +20,18 @@
         name: "ButtonGame",
         props: {
             type: {
+                default: null,
                 validator: function(value) {
                     return ["rock", "paper", "scissors"].indexOf(value) !== -1
-            }}
+            }},
+            onClick: {
+                default: () => null,
+                type: Function
+            },
+            disabled: {
+                default: false,
+                type: Boolean
+            }
         }
     }
 </script>
@@ -46,6 +61,14 @@
         transition: all 0.2s ease;
     }
 
+    .empty-type-button {
+        background: hsl(219, 50%, 17%);
+        height: 6rem;
+        width: 6rem;
+        border-radius: 3rem;
+        margin: 0.8rem;
+    }
+
     .button:hover {
         /* box-shadow: inset 0 -0.2rem 0 hsl(349, 70%, 36%); */
         transform: scale(1.05);
@@ -65,5 +88,17 @@
         align-items: center;
         justify-content: center;
         transition: all 0.2s ease;
+    }
+
+    .disabled {
+        cursor: default;
+    }
+
+    .disabled:hover {
+        transform: scale(1);
+    }
+
+    .disabled:hover .button-content {
+        box-shadow: inset 0 0.25rem 0 hsl(217, 5%, 80%);
     }
 </style>

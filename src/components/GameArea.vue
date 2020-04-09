@@ -1,45 +1,117 @@
 <template>
     <div class="container">
-        <div class="row">
-            <ButtonGame
-                type="paper"
-            />
-            <ButtonGame
-                type="scissors"
-            />
+        <div v-if="!playerChoice" class="first-step">
+            <div class="row">
+                <ButtonGame
+                    type="paper"
+                    v-bind:on-click="() => handleChoseAction('paper')"
+                />
+                <ButtonGame
+                    type="scissors"
+                    v-bind:on-click="() => handleChoseAction('scissors')"
+                />
+            </div>
+            <div class="row">
+                <ButtonGame
+                    type="rock"
+                    v-bind:on-click="() => handleChoseAction('rock')"
+                />
+            </div>
         </div>
-        <div class="row">
-            <ButtonGame
-                type="rock"
-            />
+        <div v-else>
+            <div class="row">
+                <div class="pick-container">
+                    <ButtonGame
+                        v-bind:type="playerChoice"
+                        v-bind:disabled="true"
+                    />
+                    <p class="pick-label">You picked</p>
+                </div>
+                <div class="pick-container">
+                    <ButtonGame
+                        v-bind:type="computerChoice"
+                        v-bind:disabled="true"
+                    />
+                    <p class="pick-label">The house picked</p>
+                </div>
+            </div>
+            <div v-if="playerWin !== null" class="result-part">
+                <p>{{this.playerWin ? 'You win' : 'You lose'}}</p>
+                <Button
+                    label="Play again"
+                    variant="primary"
+                    v-bind:handle-click="handleNewGame"
+                />
+            </div>
         </div>
-        <!-- <ButtonGame
-            image-src="../assets/icon-rock.svg"
-        />
-        <ButtonGame
-            image-src="../assets/icon-rock.svg"
-        /> -->
+
     </div>
 </template>
 
 <script>
     import ButtonGame from "./ButtonGame";
+    import Button from "./Button";
 
     export default {
         name: "GameArea",
         components: {
-            ButtonGame
+            ButtonGame,
+            Button
         },
+        data: () => ({
+            playerChoice: null,
+            computerChoice: null,
+            playerWin: null,
+        }),
         props: {
+            setScore: Function
+        },
+        methods: {
+            checkPlayerVictory: function (playerPlay, computerPlay) {
+                switch(playerPlay) {
+                    case "rock":
+                        this.playerWin = computerPlay !== "paper";
+                        break;
+                    case "paper":
+                        this.playerWin = computerPlay !== "scissors";
+                        break;
+                    case "scissors":
+                        this.playerWin = computerPlay !== "rock";
+                        break;
+                }
 
+                this.setScore(this.playerWin);
+            },
+            handleChoseAction: function (choice) {
+                this.playerChoice = choice;
+                setTimeout(this.generateComputerAnswer, 2000);
+            },
+            generateComputerAnswer: function() {
+                const possibleResults = ["rock", "paper", "scissors"].filter(choice => choice !== this.playerChoice);
+                const resultIndex = Math.floor(Math.random() * 2);
+                this.computerChoice = possibleResults[resultIndex];
+
+                setTimeout(() => this.checkPlayerVictory(this.playerChoice, this.computerChoice), 1000);
+            },
+            handleNewGame: function () {
+                this.playerChoice = null;
+                this.computerChoice = null;
+                this.playerWin = null;
+            }
         }
     }
+
 
 </script>
 
 <style scoped>
     .container {
-        position: relative;
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+    }
+
+    .first-step {
         background: url("../assets/bg-triangle.svg");
         background-size: 10rem;
         background-position: 50%;
@@ -52,5 +124,30 @@
     .row {
         display: flex;
         justify-content: space-around;
+    }
+
+    .pick-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .pick-label {
+        margin-top: 1rem;
+        color: #fff;
+        text-transform: uppercase;
+        font-weight: 600;
+    }
+
+    .result-part {
+        flex: 1;
+        /* background-color: red; */
+    }
+
+    .result-part p {
+        color: #fff;
+        font-size: 2.5rem;
+        font-weight: 700;
+        text-transform: uppercase;
     }
 </style>

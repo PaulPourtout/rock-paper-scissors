@@ -64,6 +64,9 @@
 </script>
 
 <style>
+    *:focus {
+        outline: none;
+    }
     body, h1, h2, h3, h4, p, button {
         margin: 0;
         background: none;

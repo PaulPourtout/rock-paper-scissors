@@ -1,15 +1,27 @@
 <template>
-    <div>
-        <button
-            v-if="type"
-            class="button"
-            v-bind:class="{rock: type === 'rock', paper: type === 'paper', scissors: type === 'scissors', disabled: disabled}"
-            v-on:click="onClick"
-        >
-            <div class="button-content">
-                <img v-bind:src="require('@/assets/icon-' + type + '.svg')" alt="" />
-            </div>
-        </button>
+    <div class="button-container">
+        <div v-if="type">
+            <button
+                class="button"
+                v-bind:class="{rock: type === 'rock', paper: type === 'paper', scissors: type === 'scissors', disabled: disabled}"
+                v-on:click="handleClick"
+            >
+                <div class="button-content">
+                    <img v-bind:src="require('@/assets/icon-' + type + '.svg')" alt="" />
+                </div>
+            </button>
+            <div class="pulse-effect"
+                v-bind:class="{
+                    'clicked-effect': clicked,
+                    'pulse-active-effect': pulse}"
+            ></div>
+            <div class="pulse-effect"
+                v-bind:class="{
+                    'clicked-effect': clicked,
+                    'pulse-active-effect': pulse,
+                    'second-pulse': clicked||pulse}"
+            ></div>
+        </div>
         <div v-else class="empty-type-button">
         </div>
     </div>
@@ -19,18 +31,36 @@
     export default {
         name: "ButtonGame",
         props: {
+            pulse: {
+                default: false,
+                type: Boolean
+            },
             type: {
                 default: null,
                 validator: function(value) {
                     return ["rock", "paper", "scissors"].indexOf(value) !== -1
             }},
             onClick: {
-                default: () => null,
+                default: null,
                 type: Function
             },
             disabled: {
                 default: false,
                 type: Boolean
+            }
+        },
+        data: () => ({
+            clicked: false
+        }),
+        methods: {
+            handleClick: function() {
+                if (this.onClick) {
+                    this.clicked = true;
+                    setTimeout(this.onClick, 300);
+                    console.log("CLICK", this.clicked)
+
+                    setTimeout(() => this.clicked = false, 2000);
+                }
             }
         }
     }
@@ -51,7 +81,12 @@
         box-shadow: inset 0 -0.3rem 0 hsl(35, 100%, 38%);
     }
 
+    .button-container {
+        position: relative;
+    }
+
     .button {
+        position: relative;
         cursor: pointer;
         padding: 0.8rem;
         border-radius: 50%;
@@ -86,6 +121,7 @@
         box-shadow: inset 0 0.25rem 0 hsl(217, 5%, 80%);
         background: #FFF;
         display: flex;
+        z-index: 5;
         align-items: center;
         justify-content: center;
         transition: all 0.2s ease;
@@ -101,6 +137,41 @@
 
     .disabled:hover .button-content {
         box-shadow: inset 0 0.25rem 0 hsl(217, 5%, 80%);
+    }
+
+    .pulse-effect {
+        position: absolute;
+        /* background-color: red; */
+        background-color: rgb(255,255,255);
+        border-radius: 3.5rem;
+        width: 7rem;
+        height: 7rem;
+        z-index: 0;
+        top: 5%;
+        left: 50%;
+        transform: translate(-50%);
+    }
+
+    .pulse-active-effect {
+        animation: 2s ease-out infinite pulse;
+    }
+
+    .second-pulse {
+        animation-delay: 0.35s;
+    }
+
+    .clicked-effect {
+        animation: 0.8s ease-out pulse;
+    }
+
+    @keyframes pulse {
+        from {
+            transform: translate(-50%) scale(1);
+            opacity: 0.2;
+        } to {
+            transform: translate(-50%) scale(2);
+            opacity: 0;
+        }
     }
 
     @media screen and (min-width: 500px) {

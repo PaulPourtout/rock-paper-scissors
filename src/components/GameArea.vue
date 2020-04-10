@@ -31,6 +31,7 @@
                         <ButtonGame
                             v-bind:type="playerChoice"
                             v-bind:disabled="true"
+                            v-bind:pulse="winner === 'player'"
                         />
                         <p class="pick-label">You picked</p>
                     </div>
@@ -38,6 +39,7 @@
                             <ButtonGame
                                 v-bind:type="computerChoice"
                                 v-bind:disabled="true"
+                                v-bind:pulse="winner === 'computer'"
                             />
                         <p class="pick-label">The house picked</p>
                     </div>

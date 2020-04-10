@@ -84,14 +84,14 @@
             },
             handleChoseAction: function (choice) {
                 this.playerChoice = choice;
-                setTimeout(this.generateComputerAnswer, 2000);
+                setTimeout(this.generateComputerAnswer, 700);
             },
             generateComputerAnswer: function() {
                 const possibleResults = ["rock", "paper", "scissors"].filter(choice => choice !== this.playerChoice);
                 const resultIndex = Math.floor(Math.random() * 2);
                 this.computerChoice = possibleResults[resultIndex];
 
-                setTimeout(() => this.checkPlayerVictory(this.playerChoice, this.computerChoice), 1000);
+                setTimeout(() => this.checkPlayerVictory(this.playerChoice, this.computerChoice), 700);
             },
             handleNewGame: function () {
                 this.playerChoice = null;

@@ -1,7 +1,7 @@
 <template>
     <button
         v-on:click="handleClick"
-        class="button secondary"
+        class="button"
         v-bind:class="{primary: variant === 'primary', secondary: variant === 'secondary'}"
     >
         {{label}}
@@ -32,10 +32,16 @@
     }
 
     .primary {
-        background-color: #FFF;
-        border: 0.1rem solid red;
-        border-radius: 5px;
         font-weight: 400;
+        background-color: #fff;
+        border: 0.1rem solid #FFF;
+        border-radius: 0.5rem;
+        padding: 0.5rem 2.2rem;
+        transition: all 0.2s ease;
+    }
+
+    .primary:hover {
+        background-color: hsl(0, 0%, 70%);
     }
     
     .secondary {

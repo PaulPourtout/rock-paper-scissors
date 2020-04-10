@@ -109,16 +109,21 @@
         display: flex;
         flex: 1;
         flex-direction: column;
+        justify-content: center;
+        align-items: center;
     }
 
     .first-step {
         background: url("../assets/bg-triangle.svg");
-        background-size: 10rem;
+        background-size: 50%;
         background-position: 50%;
         background-repeat: no-repeat;
         display: flex;
-        flex: 1;
+        /* flex: 1; */
         flex-direction: column;
+        width: 100%;
+        height: 20rem;
+        justify-content: space-around;
     }
 
     .row {
@@ -149,5 +154,25 @@
         font-size: 2.5rem;
         font-weight: 700;
         text-transform: uppercase;
+    }
+
+    .fade-enter-active, .fade-leave-active {
+        transition: opacity .5s;
+    }
+    .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+        opacity: 0;
+    }
+
+    @media screen and (min-width: 500px) {
+        .first-step {
+            width: 31rem;
+        }
+    }
+
+    @media screen and (min-width: 750px) {
+        .first-step {
+            width: 40rem;
+            height: 30rem;
+        }
     }
 </style>

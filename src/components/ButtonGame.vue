@@ -59,6 +59,7 @@
         align-items: center;
         justify-content: center;
         transition: all 0.2s ease;
+        z-index: 5;
     }
 
     .empty-type-button {
@@ -95,10 +96,25 @@
     }
 
     .disabled:hover {
-        transform: scale(1);
+        transform: none;
     }
 
     .disabled:hover .button-content {
         box-shadow: inset 0 0.25rem 0 hsl(217, 5%, 80%);
+    }
+
+    @media screen and (min-width: 500px) {
+        .button-content {
+            height: 8rem;
+            width: 8rem;
+            border-radius: 4rem;
+        }
+        .button {
+            padding: 1.2rem;
+        }
+    }
+
+    @media screen and (min-width: 750px) {
+       
     }
 </style>

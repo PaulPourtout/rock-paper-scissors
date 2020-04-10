@@ -71,24 +71,28 @@
         border: none;
     }
 
+    body {
+        background: radial-gradient(hsl(214, 47%, 23%), hsl(237, 49%, 15%));
+    }
+
     #app {
         font-family: Avenir, Helvetica, Arial, sans-serif;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
         text-align: center;
-        margin: 0;
-        background: radial-gradient(hsl(214, 47%, 23%), hsl(237, 49%, 15%));
+        margin: auto;
         height: 100vh;
         color: #2c3e50;
         display: flex;
+        max-width: 1000px;
         flex-direction: column;
     }
 
     .main-zone {
         flex: 1;
         display: flex;
-        justify-content: center;
-        align-items: center;
+        /* justify-content: center;
+        align-items: center; */
     }
 
     .rules-bnt-container {

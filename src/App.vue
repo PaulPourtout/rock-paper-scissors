@@ -86,6 +86,7 @@
         display: flex;
         max-width: 1000px;
         flex-direction: column;
+        overflow: hidden;
     }
 
     .main-zone {

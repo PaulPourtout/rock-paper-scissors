@@ -1,49 +1,53 @@
 <template>
     <div class="container">
-        <div v-if="!playerChoice" class="first-step">
-            <div class="row">
-                <ButtonGame
-                    type="paper"
-                    v-bind:on-click="() => handleChoseAction('paper')"
-                />
-                <ButtonGame
-                    type="scissors"
-                    v-bind:on-click="() => handleChoseAction('scissors')"
-                />
+        <transition name="slide-fade">
+            <div v-if="!playerChoice" class="first-step">
+                    <div class="row">
+                        <ButtonGame
+                            type="paper"
+                            v-bind:on-click="() => handleChoseAction('paper')"
+                        />
+                        <ButtonGame
+                            type="scissors"
+                            v-bind:on-click="() => handleChoseAction('scissors')"
+                        />
+                    </div>
+                    <div class="row">
+                        <ButtonGame
+                            type="rock"
+                            v-bind:on-click="() => handleChoseAction('rock')"
+                        />
+                    </div>
             </div>
-            <div class="row">
-                <ButtonGame
-                    type="rock"
-                    v-bind:on-click="() => handleChoseAction('rock')"
-                />
-            </div>
-        </div>
-        <div v-else>
-            <div class="row">
-                <div class="pick-container">
-                    <ButtonGame
-                        v-bind:type="playerChoice"
-                        v-bind:disabled="true"
-                    />
-                    <p class="pick-label">You picked</p>
+        </transition>
+        <transition name="slide-fade">
+            <div v-if="step === 2">
+                <div class="row">
+                    <div class="pick-container">
+                        <ButtonGame
+                            v-bind:type="playerChoice"
+                            v-bind:disabled="true"
+                        />
+                        <p class="pick-label">You picked</p>
+                    </div>
+                    <div class="pick-container">
+                        <ButtonGame
+                            v-bind:type="computerChoice"
+                            v-bind:disabled="true"
+                        />
+                        <p class="pick-label">The house picked</p>
+                    </div>
                 </div>
-                <div class="pick-container">
-                    <ButtonGame
-                        v-bind:type="computerChoice"
-                        v-bind:disabled="true"
+                <div v-if="winner" class="result-part">
+                    <p>{{winner === "player" ? 'You win' : winner === "even" ? "Equality !" : 'You lose'}}</p>
+                    <Button
+                        label="Play again"
+                        variant="primary"
+                        v-bind:handle-click="handleNewGame"
                     />
-                    <p class="pick-label">The house picked</p>
                 </div>
             </div>
-            <div v-if="playerWin !== null" class="result-part">
-                <p>{{this.playerWin ? 'You win' : 'You lose'}}</p>
-                <Button
-                    label="Play again"
-                    variant="primary"
-                    v-bind:handle-click="handleNewGame"
-                />
-            </div>
-        </div>
+        </transition>
 
     </div>
 </template>
@@ -59,44 +63,55 @@
             Button
         },
         data: () => ({
+            step: 1,
             playerChoice: null,
             computerChoice: null,
-            playerWin: null,
+            winner: null,
         }),
         props: {
             setScore: Function
         },
         methods: {
             checkPlayerVictory: function (playerPlay, computerPlay) {
-                switch(playerPlay) {
-                    case "rock":
-                        this.playerWin = computerPlay !== "paper";
+                if (playerPlay === computerPlay) {
+                    this.winner = "even";
+                } else {
+                    switch(playerPlay) {
+                        case "rock":
+                            this.winner = computerPlay !== "paper" ? "player" : "computer";
                         break;
                     case "paper":
-                        this.playerWin = computerPlay !== "scissors";
+                        this.winner = computerPlay !== "scissors" ? "player" : "computer";
                         break;
                     case "scissors":
-                        this.playerWin = computerPlay !== "rock";
+                        this.winner = computerPlay !== "rock" ? "player" : "computer";
                         break;
+                    }
                 }
 
-                this.setScore(this.playerWin);
+                if (playerPlay !== computerPlay) {
+                    this.setScore(this.winner === "player");
+                }
             },
             handleChoseAction: function (choice) {
                 this.playerChoice = choice;
-                setTimeout(this.generateComputerAnswer, 700);
+                setTimeout(this.generateComputerAnswer, 1000);
             },
             generateComputerAnswer: function() {
-                const possibleResults = ["rock", "paper", "scissors"].filter(choice => choice !== this.playerChoice);
-                const resultIndex = Math.floor(Math.random() * 2);
+                const possibleResults = ["rock", "paper", "scissors"];
+                const resultIndex = Math.floor(Math.random() * 3);
                 this.computerChoice = possibleResults[resultIndex];
 
                 setTimeout(() => this.checkPlayerVictory(this.playerChoice, this.computerChoice), 700);
+                this.step = 2;
             },
             handleNewGame: function () {
-                this.playerChoice = null;
-                this.computerChoice = null;
-                this.playerWin = null;
+                this.step = 1;
+                setTimeout(() => {
+                    this.playerChoice = null;
+                    this.computerChoice = null;
+                    this.winner = null;
+                }, 800)
             }
         }
     }
@@ -156,10 +171,14 @@
         text-transform: uppercase;
     }
 
-    .fade-enter-active, .fade-leave-active {
-        transition: opacity .5s;
+    .slide-fade-enter-active {
+        transition: all .3s ease;
     }
-    .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+    .slide-fade-leave-active {
+        transition: all .7s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+    }
+    .slide-fade-enter, .slide-fade-leave-to {
+        transform: translateX(10px);
         opacity: 0;
     }
 

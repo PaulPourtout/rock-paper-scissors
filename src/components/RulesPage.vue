@@ -1,11 +1,13 @@
 <template>
-    <div v-if="isOpen" class="container">
-        <p>Rules</p>
-        <img src="../assets/image-rules.svg" alt="">
-        <button v-on:click="handleClose">
-            <img src="../assets/icon-close.svg" alt="">
-        </button>
-    </div>
+    <transition name="slide-fade">
+        <div v-if="isOpen" class="container">
+            <p>Rules</p>
+            <img src="../assets/image-rules.svg" alt="">
+            <button v-on:click="handleClose">
+                <img src="../assets/icon-close.svg" alt="">
+            </button>
+        </div>
+    </transition>
 </template>
 
 <script>
@@ -54,5 +56,16 @@
 
     button:hover {
         background-color: hsl(217, 10%, 90%);
+    }
+
+    .slide-fade-enter-active {
+        transition: all .3s ease-out;
+    }
+    .slide-fade-leave-active {
+        transition: all .8s ease-in;
+        opacity: .5;
+    }
+    .slide-fade-enter, .slide-fade-leave-to {
+        opacity: 0;
     }
 </style>

@@ -3,7 +3,7 @@
         <div v-if="type">
             <button
                 class="button"
-                v-bind:class="{rock: type === 'rock', paper: type === 'paper', scissors: type === 'scissors', disabled: disabled}"
+                v-bind:class="{rock: type === 'rock', paper: type === 'paper', scissors: type === 'scissors', disabled: disabled, 'button-active': !disabled}"
                 v-on:click="handleClick"
             >
                 <div class="button-content">
@@ -57,8 +57,6 @@
                 if (this.onClick) {
                     this.clicked = true;
                     setTimeout(this.onClick, 300);
-                    console.log("CLICK", this.clicked)
-
                     setTimeout(() => this.clicked = false, 2000);
                 }
             }
@@ -69,7 +67,7 @@
 <style scoped>
     .rock {
         background: linear-gradient(180deg, hsl(349, 71%, 52%), hsl(349, 70%, 56%));
-        box-shadow: inset 0 -0.3rem 0 hsl(349, 90%, 36%);
+        box-shadow: inset 0 -0.3rem hsl(349, 90%, 36%);
     }
 
     .paper {
@@ -95,6 +93,18 @@
         justify-content: center;
         transition: all 0.2s ease;
         z-index: 5;
+    }
+
+    .button:focus {
+        outline: none;
+    }
+
+    .button-active:active {
+        transform: scale(0.95) !important;
+    }
+   
+    .button-active:active .button-content {
+        box-shadow: inset 0 0.40rem 0 hsl(217, 5%, 80%) !important;
     }
 
     .empty-type-button {
@@ -157,11 +167,21 @@
     }
 
     .second-pulse {
-        animation-delay: 0.35s;
+        animation-delay: 0.8s;
     }
 
     .clicked-effect {
-        animation: 0.8s ease-out pulse;
+        animation: 0.2s ease-out clicked-pulse;
+    }
+
+    @keyframes clicked-pulse {
+        from {
+            transform: translate(-50%) scale(1);
+            opacity: 0.1;
+        } to {
+            transform: translate(-50%) scale(2);
+            opacity: 0;
+        }
     }
 
     @keyframes pulse {

@@ -35,6 +35,12 @@
                         />
                         <p class="pick-label">You picked</p>
                     </div>
+                    <div class="result-part-container--desktop">
+                        <ResultView
+                            :handleNewGame="handleNewGame"
+                            :winner="winner"
+                        />
+                    </div>
                     <div class="pick-container">
                             <ButtonGame
                                 v-bind:type="computerChoice"
@@ -44,18 +50,12 @@
                         <p class="pick-label">The house picked</p>
                     </div>
                 </div>
-                <transition
-                    name="slide-to-top"
-                >
-                    <div v-if="winner" class="result-part">
-                        <p>{{winner === "player" ? 'You win' : winner === "even" ? "Equality !" : 'You lose'}}</p>
-                        <Button
-                            label="Play again"
-                            variant="primary"
-                            v-bind:handle-click="handleNewGame"
-                        />
-                    </div>
-                </transition>
+                <div class="result-part-container--mobile">
+                    <ResultView
+                        :handleNewGame="handleNewGame"
+                        :winner="winner"
+                    />
+                </div>
             </div>
         </transition>
 
@@ -64,13 +64,14 @@
 
 <script>
     import ButtonGame from "./ButtonGame";
-    import Button from "./Button";
+    import ResultView from "./ResultView";
 
     export default {
         name: "GameArea",
         components: {
             ButtonGame,
-            Button
+            ResultView
+            // Button
         },
         data: () => ({
             step: 1,
@@ -154,11 +155,13 @@
     .step-2-container {
         display: flex;
         flex-direction: column;
-        height: 17rem;
+        height: 18rem;
+        justify-content: space-between;
     }
 
     .row {
         display: flex;
+        align-items: center;
         justify-content: space-around;
     }
 
@@ -166,25 +169,23 @@
         display: flex;
         flex-direction: column;
         align-items: center;
+        margin: 0 1rem;
     }
 
     .pick-label {
-        margin-top: 1rem;
+        margin: 1.5rem;
         color: #fff;
         text-transform: uppercase;
         font-weight: 600;
     }
 
-    .result-part {
-        flex: 1;
-        /* background-color: red; */
+    .result-part-container--desktop {
+        display: none;
+        /* margin: 0 2rem; */
     }
-
-    .result-part p {
-        color: #fff;
-        font-size: 2.5rem;
-        font-weight: 700;
-        text-transform: uppercase;
+    
+    .result-part-container--mobile {
+        display: block;
     }
 
     .slide-fade-enter-active {
@@ -221,12 +222,36 @@
         .first-step {
             width: 31rem;
         }
+
+        .step-2-container {
+            height: 23rem;
+        }
     }
 
     @media screen and (min-width: 750px) {
         .first-step {
             width: 40rem;
             height: 30rem;
+        }
+
+        .step-2-container {
+            height: 23rem;
+        }
+
+        .result-part-container--desktop {
+            display: block;
+        }
+    
+        .result-part-container--mobile {
+            display: none;
+        }
+
+        .pick-container {
+            flex-flow: column-reverse;
+        }
+
+        .pick-label {
+            font-size: 1.4rem;
         }
     }
 </style>

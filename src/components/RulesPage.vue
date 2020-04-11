@@ -1,11 +1,13 @@
 <template>
     <transition name="slide-fade">
         <div v-if="isOpen" class="container">
-            <p>Rules</p>
-            <img src="../assets/image-rules.svg" alt="">
-            <button v-on:click="handleClose">
-                <img src="../assets/icon-close.svg" alt="">
-            </button>
+            <div class="content">
+                <p>Rules</p>
+                <img src="../assets/image-rules.svg" alt="">
+                <button v-on:click="handleClose">
+                    <img src="../assets/icon-close.svg" alt="">
+                </button>
+            </div>
         </div>
     </transition>
 </template>
@@ -27,19 +29,28 @@
         font-size: 2rem;
     }
 
-    .container{
-        position: absolute;
-        padding: 1rem 0;
-        top: 0;
-        bottom: 0;
-        left: 0;
-        right: 0;
+    .content{
+        padding: 1rem;
         background-color: #fff;
-        z-index: 10;
+        flex: 1;
+        z-index: 15;
         display: flex;
         justify-content: space-around;
         align-items: center;
         flex-direction: column;
+    }
+
+    .container {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 10;
+        display: flex;
+        justify-content: center;
+        align-items: stretch;
+        background-color: rgba(0,0,0,0.3);
     }
 
     button {
@@ -62,10 +73,21 @@
         transition: all .3s ease-out;
     }
     .slide-fade-leave-active {
-        transition: all .8s ease-in;
+        transition: all .4s ease-in;
         opacity: .5;
     }
     .slide-fade-enter, .slide-fade-leave-to {
         opacity: 0;
+    }
+
+    @media screen and (min-width: 500px) {
+        .container {
+            align-items: center;
+        }
+
+        .content {
+            border-radius: 0.5rem;
+            flex: 0;
+        }
     }
 </style>

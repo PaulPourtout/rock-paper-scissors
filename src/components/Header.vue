@@ -27,12 +27,14 @@
 
 <style >
     header {
-        padding: 2rem;
+        padding: 2rem 0;
     }
     .header-container {
+        max-width: 40rem;
+        margin: auto;
         border: 3px solid hsl(217, 16%, 45%);
         border-radius: 5px;
-        padding: 1rem;
+        padding: .7rem;
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -40,5 +42,12 @@
 
     #logo {
         width: 6rem;
+    }
+
+    @media screen and (min-width: 750px) {
+        #logo {
+            width: 12rem;
+        }
+
     }
 </style>

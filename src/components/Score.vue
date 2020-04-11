@@ -20,15 +20,30 @@
         color: hsl(229, 64%, 46%);
         margin: 0;
         font-weight: 600;
+        text-transform: uppercase;
     }
     .score {
         color: hsl(229, 25%, 31%);
         font-size: 2rem;
-        font-weight: 700;
+        font-weight: 700 !important;
     }
     .container {
         background-color: #fff;
         padding: 0.5rem 1.5rem;
         border-radius: 0.5rem;
+    }
+
+    @media screen and (min-width: 750px) {
+         .text {
+            font-size: 1.3rem;
+        }
+        .score {
+            font-size: 4rem;
+        }
+        .container {
+            background-color: #fff;
+            padding: 0.5rem 1.5rem;
+            border-radius: 0.5rem;
+        }
     }
 </style>

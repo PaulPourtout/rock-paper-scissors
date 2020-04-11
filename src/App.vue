@@ -1,18 +1,9 @@
 <template>
     <div id="app">
-        <!-- <div>
-        You Picked
-        The House Picked
-
-        You Win
-        You Lose
-
-        Play Again
-        </div> -->
-        <Header v-bind:score="score" />
+        <Header :score="score" />
         <div class="main-zone">
             <GameArea
-                v-bind:set-score="setScore"
+                :set-score="setScore"
             />
         </div>
 
@@ -20,16 +11,16 @@
             <Button
                 label="Rules"
                 variant="secondary"
-                v-bind:handle-click="handleToggleClick"
+                :handle-click="handleToggleClick"
             />
         </div>
         <RulesPage
-            v-bind:is-open="isModalOpen"
-            v-bind:handle-close="handleToggleClick"
+            :is-open="isModalOpen"
+            :handle-close="handleToggleClick"
         />
         <div class="attribution">
             Challenge by <a href="https://www.frontendmentor.io?ref=challenge" target="_blank">Frontend Mentor</a>. 
-            Coded by <a href="#">Your Name Here</a>.
+            Coded by <a href="#">Paul Pourtout</a>.
         </div>
     </div>
 </template>
@@ -66,6 +57,7 @@
 <style>
     * {
         outline: none;
+        font-family: 'Barlow Semi Condensed', sans-serif;
     }
     body, h1, h2, h3, h4, p, button {
         margin: 0;
@@ -79,6 +71,7 @@
     }
 
     #app {
+        padding: 0 2rem;
         font-family: Avenir, Helvetica, Arial, sans-serif;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
@@ -110,5 +103,11 @@
 
     .attribution a {
         color: hsl(228, 45%, 44%);
+    }
+
+    @media screen and (min-width: 500px) {
+        .rules-bnt-container {
+            align-self: end;
+        }
     }
 </style>

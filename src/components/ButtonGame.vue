@@ -21,6 +21,12 @@
                     'pulse-active-effect': pulse,
                     'second-pulse': clicked||pulse}"
             ></div>
+            <div class="pulse-effect"
+                v-bind:class="{
+                    'clicked-effect': clicked,
+                    'pulse-active-effect': pulse,
+                    'third-pulse': clicked||pulse}"
+            ></div>
         </div>
         <div v-else class="empty-type-button">
         </div>
@@ -67,16 +73,16 @@
 <style scoped>
     .rock {
         background: linear-gradient(180deg, hsl(349, 71%, 52%), hsl(349, 70%, 56%));
-        box-shadow: inset 0 -0.3rem hsl(349, 90%, 36%);
+        box-shadow: inset 0 -0.3rem hsl(349, 90%, 36%), 0 0.15rem hsl(349, 0%, 10%);
     }
 
     .paper {
         background: linear-gradient(180deg, hsl(230, 89%, 62%), hsl(230, 89%, 65%));
-        box-shadow: inset 0 -0.3rem 0 hsl(230, 80%, 50%);
+        box-shadow: inset 0 -0.3rem 0 hsl(230, 80%, 50%), 0 0.15rem hsl(349, 0%, 10%);
     }
     .scissors {
         background: linear-gradient(180deg, hsl(39, 89%, 49%), hsl(40, 84%, 53%));
-        box-shadow: inset 0 -0.3rem 0 hsl(35, 100%, 38%);
+        box-shadow: inset 0 -0.3rem 0 hsl(35, 100%, 38%), 0 0.15rem hsl(349, 0%, 10%);
     }
 
     .button-container {
@@ -151,7 +157,6 @@
 
     .pulse-effect {
         position: absolute;
-        /* background-color: red; */
         background-color: rgb(255,255,255);
         border-radius: 3.5rem;
         width: 7rem;
@@ -167,7 +172,11 @@
     }
 
     .second-pulse {
-        animation-delay: 0.8s;
+        animation-delay: 0.7s;
+    }
+
+    .third-pulse {
+        animation-delay: 1.4s;
     }
 
     .clicked-effect {
@@ -187,7 +196,7 @@
     @keyframes pulse {
         from {
             transform: translate(-50%) scale(1);
-            opacity: 0.2;
+            opacity: 0.04;
         } to {
             transform: translate(-50%) scale(2);
             opacity: 0;
@@ -195,17 +204,63 @@
     }
 
     @media screen and (min-width: 500px) {
-        .button-content {
+        .button-content, .empty-type-button {
             height: 8rem;
             width: 8rem;
             border-radius: 4rem;
         }
+        .empty-type-button {
+            margin: 1.2rem;
+        }
         .button {
             padding: 1.2rem;
         }
+
+         .button img {
+            width: 3.5rem;
+        }
+
+        .pulse-effect {
+            border-radius: 4.5rem;
+            width: 9rem;
+            height: 9rem;
+        }  
     }
 
     @media screen and (min-width: 750px) {
-       
+        .button-content, .empty-type-button {
+            height: 12rem;
+            width: 12rem;
+            border-radius: 6rem;
+        }
+
+        .empty-type-button {
+            margin: 1.8rem;
+        }
+
+        .button {
+            padding: 1.8rem;
+        }
+
+        .button img {
+            width: 5rem;
+        }
+
+        .pulse-effect {
+            border-radius: 6rem;
+            width: 12rem;
+            height: 12rem;
+            top: 9%;
+        }  
+        .rock {
+            box-shadow: inset 0 -0.7rem hsl(349, 90%, 36%), 0 0.25rem hsl(349, 0%, 10%);
+        }
+
+        .paper {
+            box-shadow: inset 0 -0.7rem 0 hsl(230, 80%, 50%), 0 0.25rem hsl(349, 0%, 10%);
+        }
+        .scissors {
+            box-shadow: inset 0 -0.7rem 0 hsl(35, 100%, 38%), 0 0.25rem hsl(349, 0%, 10%);
+        }
     }
 </style>

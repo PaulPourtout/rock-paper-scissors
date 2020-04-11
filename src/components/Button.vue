@@ -41,7 +41,8 @@
     }
 
     .primary:hover {
-        background-color: hsl(0, 0%, 70%);
+        transform: scale(0.95);
+        color: hsl(349, 71%, 52%);
     }
     
     .secondary {
@@ -57,5 +58,13 @@
     .secondary:hover {
         color: hsl(229, 25%, 31%);
         background-color: #FFF;
+    }
+
+    @media screen and (min-width: 750px) {
+        .button.primary {
+            font-size: 1.6rem;
+            padding: 0.75rem 2.7rem;
+        }
+        
     }
 </style>

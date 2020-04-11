@@ -19,6 +19,7 @@
     .text {
         color: hsl(229, 64%, 46%);
         margin: 0;
+        font-size: 0.8rem;
         font-weight: 600;
         text-transform: uppercase;
     }
@@ -29,13 +30,13 @@
     }
     .container {
         background-color: #fff;
-        padding: 0.5rem 1.5rem;
+        padding: 0.5rem 1.2rem;
         border-radius: 0.5rem;
     }
 
     @media screen and (min-width: 900px) {
          .text {
-            font-size: 1.3rem;
+            font-size: 1rem;
         }
         .score {
             font-size: 4rem;

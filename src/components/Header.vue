@@ -30,7 +30,6 @@
         padding: 2rem 0;
     }
     .header-container {
-        max-width: 40rem;
         margin: auto;
         border: 3px solid hsl(217, 16%, 45%);
         border-radius: 5px;
@@ -44,7 +43,16 @@
         width: 6rem;
     }
 
+    @media screen and (min-width: 500px) {
+        .header-container {
+            max-width: 30rem;
+        }
+
+    }
     @media screen and (min-width: 900px) {
+        .header-container {
+            max-width: 40rem;
+        }
         #logo {
             width: 12rem;
         }

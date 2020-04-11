@@ -88,6 +88,12 @@
         .content {
             border-radius: 0.5rem;
             flex: 0;
+            min-height: 32rem;
+            min-width: 30rem;
+        }
+
+        .content>img {
+            width: 25rem;
         }
     }
 </style>

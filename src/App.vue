@@ -20,7 +20,7 @@
         />
         <div class="attribution">
             Challenge by <a href="https://www.frontendmentor.io?ref=challenge" target="_blank">Frontend Mentor</a>. 
-            Coded by <a href="#">Paul Pourtout</a>.
+            Coded by <a href="https://github.com/PaulPourtout">Paul Pourtout</a>.
         </div>
     </div>
 </template>
@@ -99,10 +99,15 @@
     .attribution {
         font-size: 11px;
         margin: 1rem 0;
+        color: #fff;
     }
 
     .attribution a {
         color: hsl(228, 45%, 44%);
+    }
+    
+    .attribution a:hover {
+        color: hsl(349, 71%, 52%);
     }
 
     @media screen and (min-width: 500px) {

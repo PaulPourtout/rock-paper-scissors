@@ -41,7 +41,7 @@
         },
         data: () => ({
                 isModalOpen: false,
-                score: 0
+                score: 0,
         }),
         methods: {
             handleToggleClick: function () {
@@ -49,7 +49,7 @@
             },
             setScore: function (increase) {
                 this.score = increase ? this.score + 1 : this.score - 1;
-            }
+            },
         }
     }
 </script>

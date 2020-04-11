@@ -63,6 +63,7 @@
 </template>
 
 <script>
+    import io from 'socket.io-client';
     import ButtonGame from "./ButtonGame";
     import ResultView from "./ResultView";
 
@@ -78,6 +79,7 @@
             playerChoice: null,
             computerChoice: null,
             winner: null,
+            socket: io('localhost:4113')
         }),
         props: {
             setScore: Function
@@ -106,8 +108,16 @@
             },
             handleChoseAction: function (choice) {
                 this.playerChoice = choice;
+                this.sendChoiceToSocket(choice);
                 setTimeout(() => this.step = 2, 550);
                 setTimeout(this.generateComputerAnswer, 2000);
+            },
+            sendChoiceToSocket: function(choice) {
+                console.log("SENDING MESSAGE")
+                this.socket.emit('SEND_MESSAGE', {
+                    user: "player 1",
+                    message: choice
+                })
             },
             generateComputerAnswer: function() {
                 const possibleResults = ["rock", "paper", "scissors"];

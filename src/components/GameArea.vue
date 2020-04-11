@@ -26,7 +26,7 @@
             leave-to-class="fade-out"
         >
             <div v-if="step === 2" class="step-2-container">
-                <div class="row">
+                <div class="row row-result">
                     <div class="pick-container">
                         <ButtonGame
                             v-bind:type="playerChoice"
@@ -164,6 +164,11 @@
         display: flex;
         align-items: center;
         justify-content: space-around;
+        /* flex: 1; */
+    }
+
+    .row-result {
+        transition: all 0.3s ease;
     }
 
     .pick-container {
@@ -241,6 +246,11 @@
 
         .result-part-container--desktop {
             display: block;
+        }
+
+        .row-result {
+            justify-content: space-between !important;
+            padding: 0 2rem;
         }
     
         .result-part-container--mobile {

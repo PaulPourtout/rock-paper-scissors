@@ -3,7 +3,7 @@
         name="slide-to-top"
     >
         <div v-if="winner" class="result-part">
-            <p>{{winner === "player" ? 'You win' : winner === "even" ? "Equality !" : 'You lose'}}</p>
+            <p>{{winner === "player" ? 'You win' : winner === "even" ? "Tie !" : 'You lose'}}</p>
             <Button
                 label="Play again"
                 variant="primary"

@@ -156,6 +156,7 @@
         display: flex;
         flex-direction: column;
         height: 18rem;
+        width: 100%;
         justify-content: space-between;
     }
 
@@ -169,11 +170,11 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        margin: 0 1rem;
+        margin: 0;
     }
 
     .pick-label {
-        margin: 1.5rem;
+        margin: 1.5rem 0;
         color: #fff;
         text-transform: uppercase;
         font-weight: 600;
@@ -228,7 +229,7 @@
         }
     }
 
-    @media screen and (min-width: 750px) {
+    @media screen and (min-width: 900px) {
         .first-step {
             width: 40rem;
             height: 30rem;

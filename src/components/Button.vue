@@ -60,7 +60,7 @@
         background-color: #FFF;
     }
 
-    @media screen and (min-width: 750px) {
+    @media screen and (min-width: 900px) {
         .button.primary {
             font-size: 1.6rem;
             padding: 0.75rem 2.7rem;

@@ -44,7 +44,7 @@
         width: 6rem;
     }
 
-    @media screen and (min-width: 750px) {
+    @media screen and (min-width: 900px) {
         #logo {
             width: 12rem;
         }

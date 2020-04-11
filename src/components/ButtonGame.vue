@@ -227,7 +227,7 @@
         }  
     }
 
-    @media screen and (min-width: 750px) {
+    @media screen and (min-width: 900px) {
         .button-content, .empty-type-button {
             height: 12rem;
             width: 12rem;

@@ -33,6 +33,7 @@
         font-size: 2.5rem;
         font-weight: 700;
         text-transform: uppercase;
+        margin: 0.5rem 0;
     }
 
     .slide-to-top-enter {
@@ -45,9 +46,10 @@
         transition: all .15s ease-in;
     }
 
-     @media screen and (min-width: 750px){
+     @media screen and (min-width: 900px){
         .result-part p {
             font-size: 3.5rem;
+            margin: 1rem 0;
         }
     }
 </style>

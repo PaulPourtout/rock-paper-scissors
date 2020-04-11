@@ -33,7 +33,7 @@
         border-radius: 0.5rem;
     }
 
-    @media screen and (min-width: 750px) {
+    @media screen and (min-width: 900px) {
          .text {
             font-size: 1.3rem;
         }
@@ -42,7 +42,7 @@
         }
         .container {
             background-color: #fff;
-            padding: 0.5rem 1.5rem;
+            padding: 0.5rem 2.5rem;
             border-radius: 0.5rem;
         }
     }

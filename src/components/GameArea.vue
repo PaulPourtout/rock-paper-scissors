@@ -63,9 +63,9 @@
 </template>
 
 <script>
-    import io from 'socket.io-client';
     import ButtonGame from "./ButtonGame";
     import ResultView from "./ResultView";
+    import { store } from "../store";
 
     export default {
         name: "GameArea",
@@ -74,15 +74,23 @@
             ResultView
             // Button
         },
+        sockets: {
+            
+        },
+        computed: {
+            adversaryChoice () {
+                return this.$store.state.adversaryChoice
+            }
+        },
         data: () => ({
             step: 1,
             playerChoice: null,
             computerChoice: null,
             winner: null,
-            socket: io('localhost:4113')
         }),
         props: {
-            setScore: Function
+            setScore: Function,
+            socket: Object
         },
         methods: {
             checkPlayerVictory: function (playerPlay, computerPlay) {
@@ -110,14 +118,13 @@
                 this.playerChoice = choice;
                 this.sendChoiceToSocket(choice);
                 setTimeout(() => this.step = 2, 550);
-                setTimeout(this.generateComputerAnswer, 2000);
+                if (!this.$store.multiplayerMode) {
+                    setTimeout(this.generateComputerAnswer, 2000);
+                }
             },
             sendChoiceToSocket: function(choice) {
                 console.log("SENDING MESSAGE")
-                this.socket.emit('SEND_MESSAGE', {
-                    user: "player 1",
-                    message: choice
-                })
+                store.dispatch("playerChoice", choice);
             },
             generateComputerAnswer: function() {
                 const possibleResults = ["rock", "paper", "scissors"];

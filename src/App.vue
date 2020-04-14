@@ -4,16 +4,31 @@
         <div class="main-zone">
             <GameArea
                 :set-score="setScore"
+                :socket="socket"
             />
         </div>
 
         <div class="rules-bnt-container">
+            <div v-if="!multiplayer">
+                <Button
+                    label="Multiplayer"
+                    variant="secondary"
+                    :handle-click="handleLaunchMultiplayer"
+                />
+            </div>
             <Button
                 label="Rules"
                 variant="secondary"
                 :handle-click="handleToggleClick"
             />
         </div>
+
+        <div v-if="multiplayer">
+            <p>You want to create a multiplayer room ?</p>
+            <p>Pass this link to the second player</p>
+            <p>http://localhost:8080?multiplayerRoom={{multiplayerRoom}}</p>
+        </div>
+
         <RulesPage
             :is-open="isModalOpen"
             :handle-close="handleToggleClick"
@@ -26,10 +41,14 @@
 </template>
 
 <script>
+    import { uuid } from 'uuidv4';
+    import io from 'socket.io-client';
     import Button from './components/Button.vue';
     import Header from './components/Header.vue';
     import RulesPage from './components/RulesPage.vue';
     import GameArea from './components/GameArea.vue';
+    // import { store } from "./store";
+import { mapState } from 'vuex';
 
     export default {
         name: 'App',
@@ -39,17 +58,70 @@
             Button,
             GameArea
         },
+        sockets: {
+            connect: function () {
+                console.log("new socket connected");
+            },
+            'success': function(socketid) {
+                this.$store.dispatch("connect", socketid);
+            },
+            playerChoice: function (data) {
+                if (data.user !== this.$store.playerId) {
+                    this.$store.dispatch("adversaryChoice", data.choice);
+                }
+            }
+        },
+        computed: {
+            ...mapState({
+                store: state => state
+            })
+        },
         data: () => ({
                 isModalOpen: false,
                 score: 0,
+                playerId: null,
+                multiplayer: false,
+                multiplayerLink: null,
+                socket: io('localhost:4113'),
         }),
+        mounted: function () {
+            // GET URI AND CHECK FOR SOCKET ROOM
+            let uri = window.location.href.split('?');
+            if (uri.length == 2) {
+                let vars = uri[1].split('&');
+                let getVars = {};
+                let tmp = '';
+                vars.forEach(function(v){
+                    tmp = v.split('=');
+                    if(tmp.length == 2)
+                    getVars[tmp[0]] = tmp[1];
+                });
+                console.log(getVars);
+                if (getVars.multiplayerRoom) {
+                    this.multiplayerRoom = getVars.multiplayerRoom;
+                    this.socket.emit('connect', this.multiplayerRoom);
+                }
+            }
+        },
+        beforeDestroy: function () {
+
+        },
         methods: {
             handleToggleClick: function () {
                 this.isModalOpen = !this.isModalOpen;
             },
             setScore: function (increase) {
-                this.score = increase ? this.score + 1 : this.score - 1;
+                this.score = increase ? this.score + 1 : this.score > 0 ? this.score - 1 : this.score;
             },
+            handleLaunchMultiplayer: function() {
+                this.multiplayer = true;
+                this.generateMultiplayerRoom();
+            },
+            generateMultiplayerRoom: function() {
+                const roomId = uuid();
+                this.socket.emit('create', roomId);
+                this.multiplayerRoom = roomId;
+            }
         }
     }
 </script>

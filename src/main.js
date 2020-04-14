@@ -1,17 +1,20 @@
 import Vue from 'vue'
 import App from './App.vue'
-// import socketio from 'socket.io-client';
-// import VueSocketIO from 'vue-socket.io';
+import VueSocketIO from 'vue-socket.io'
+import { store } from './store'
 
-// export const SocketInstance = socketio('http://localhost:4113')
-// Vue.use(VueSocketIO, SocketInstance);
-// Vue.use(new VueSocketIO({
-//   debug: true,
-//   connection: SocketIO('http://localhost:4113', {}),
-// }))
-
+Vue.use(new VueSocketIO({
+  debug: true,
+  connection: 'http://localhost:4113',
+  vuex: {
+    store,
+    actionPrefix: 'SOCKET_',
+    mutationPrefix: 'SOCKET_'
+  }
+}));
 Vue.config.productionTip = false
 
 new Vue({
+  store,
   render: h => h(App),
 }).$mount('#app')

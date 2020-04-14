@@ -62,13 +62,16 @@ import { mapState } from 'vuex';
             connect: function () {
                 console.log("new socket connected");
             },
-            'success': function(socketid) {
+            success: function(socketid) {
                 this.$store.dispatch("connect", socketid);
             },
             playerChoice: function (data) {
                 if (data.user !== this.$store.playerId) {
                     this.$store.dispatch("adversaryChoice", data.choice);
                 }
+            },
+            restartGame: function () {
+                this.$store.state.restartGame = true;
             }
         },
         computed: {

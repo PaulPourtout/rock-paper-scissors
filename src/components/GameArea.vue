@@ -37,13 +37,13 @@
                     </div>
                     <div class="result-part-container--desktop">
                         <ResultView
-                            :handleNewGame="handleNewGame"
+                            :handleNewGame="handleResartGame"
                             :winner="winner"
                         />
                     </div>
                     <div class="pick-container">
                             <ButtonGame
-                                v-bind:type="computerChoice"
+                                v-bind:type="computerChoice||adversaryChoice"
                                 v-bind:disabled="true"
                                 v-bind:pulse="winner === 'computer'"
                             />
@@ -52,7 +52,7 @@
                 </div>
                 <div class="result-part-container--mobile">
                     <ResultView
-                        :handleNewGame="handleNewGame"
+                        :handleNewGame="handleResartGame"
                         :winner="winner"
                     />
                 </div>
@@ -74,12 +74,12 @@
             ResultView
             // Button
         },
-        sockets: {
-            
-        },
         computed: {
-            adversaryChoice () {
-                return this.$store.state.adversaryChoice
+            adversaryChoice: function() {
+                return this.$store.state.adversaryChoice;
+            },
+            restartGame: function() {
+                return this.$store.state.restartGame;
             }
         },
         data: () => ({
@@ -88,6 +88,16 @@
             computerChoice: null,
             winner: null,
         }),
+         watch: {
+            adversaryChoice: function() {
+                setTimeout(() => this.checkPlayerVictory(this.playerChoice, this.adversaryChoice), 1000);
+            },
+            restartGame: function() {
+                console.log("NEW GAME SET")
+                this.$store.state.restartGame = false;
+                this.setNewGame();
+            }
+        },
         props: {
             setScore: Function,
             socket: Object
@@ -118,12 +128,15 @@
                 this.playerChoice = choice;
                 this.sendChoiceToSocket(choice);
                 setTimeout(() => this.step = 2, 550);
-                if (!this.$store.multiplayerMode) {
+
+                if (!this.$store.state.multiplayerMode) {
                     setTimeout(this.generateComputerAnswer, 2000);
+                }
+                else if (this.$store.state.multiplayerMode && !!this.$store.state.adversaryChoice) {
+                    setTimeout(() => this.checkPlayerVictory(this.playerChoice, this.$store.state.adversaryChoice), 1000);
                 }
             },
             sendChoiceToSocket: function(choice) {
-                console.log("SENDING MESSAGE")
                 store.dispatch("playerChoice", choice);
             },
             generateComputerAnswer: function() {
@@ -133,7 +146,11 @@
 
                 setTimeout(() => this.checkPlayerVictory(this.playerChoice, this.computerChoice), 700);
             },
-            handleNewGame: function () {
+            handleResartGame: function() {
+                this.$store.dispatch("restartGame");
+                this.setNewGame();
+            },
+            setNewGame: function () {
                 this.step = 1;
                 setTimeout(() => {
                     this.playerChoice = null;

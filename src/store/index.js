@@ -10,9 +10,14 @@ state : {
     playerChoice: null,
     adversaryChoice: null,
     playerId: null,
+    restartGame: false,
     socket: io('localhost:4113')
 },
-getters : {},
+getters : {
+    "playerChoice"() {
+        return this.adversaryChoice;
+    }
+},
 mutations : {
     "playerChoice"(state, playerChoice) {
         this.playerChoice = playerChoice;
@@ -22,12 +27,19 @@ mutations : {
         })
     },
     "adversaryChoice"(state, adversaryChoice) {
-        this.adversaryChoice = adversaryChoice;
+        state.adversaryChoice = adversaryChoice;
+        console.log("adversary choice is", state.adversaryChoice)
     },
     "connect"(state, socketId) {
         this.playerId = socketId;
         console.log("Connected to socket", socketId);
     },
+    'restartGame'(state) {
+        state.socket.emit('restartGame', {});
+        state.adversaryChoice = null;
+        state.playerChoice = null;
+        state.restartGame = true;
+    }
 },
 actions : {
     "playerChoice"(context, playerChoice) {
@@ -38,6 +50,9 @@ actions : {
     },
     "adversaryChoice"(context, adversaryChoice) {
         context.commit("adversaryChoice", adversaryChoice);
+    },
+    "restartGame"(context) {
+        context.commit("restartGame");
     }
 }
 })

@@ -104,7 +104,7 @@
         },
         methods: {
             checkPlayerVictory: function (playerPlay, computerPlay) {
-                if (playerPlay === computerPlay) {
+                if (!!playerPlay && playerPlay === computerPlay) {
                     this.winner = "even";
                 } else {
                     switch(playerPlay) {
@@ -123,6 +123,9 @@
                 if (playerPlay !== computerPlay) {
                     this.setScore(this.winner === "player");
                 }
+
+                this.$store.state.playerWon = this.winner === "player";
+                this.$store.state.kittyPlayed = true;
             },
             handleChoseAction: function (choice) {
                 this.playerChoice = choice;
@@ -147,8 +150,8 @@
                 setTimeout(() => this.checkPlayerVictory(this.playerChoice, this.computerChoice), 700);
             },
             handleResartGame: function() {
-                this.$store.dispatch("restartGame");
                 this.setNewGame();
+                this.$store.dispatch("restartGame");
             },
             setNewGame: function () {
                 this.step = 1;

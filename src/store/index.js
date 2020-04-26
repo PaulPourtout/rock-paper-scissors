@@ -1,14 +1,19 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import io from 'socket.io-client';
+import { uuid } from 'uuidv4';
 
 Vue.use(Vuex);
 
 export const store = new Vuex.Store({
 state : {
-    multiplayerMode: true,
+    multiplayerMode: false,
+    multiplayerRoomId: null,
     playerChoice: null,
     adversaryChoice: null,
+    adversaryConnectedState: null,
+    playerWon: null,
+    kittyPlayed: false,
     playerId: null,
     restartGame: false,
     socket: io('localhost:4113')
@@ -20,9 +25,9 @@ getters : {
 },
 mutations : {
     "playerChoice"(state, playerChoice) {
-        this.playerChoice = playerChoice;
+        state.playerChoice = playerChoice;
         state.socket.emit('playerChoice', {
-            user: this.playerId,
+            user: state.playerId,
             choice: playerChoice
         })
     },
@@ -31,7 +36,7 @@ mutations : {
         console.log("adversary choice is", state.adversaryChoice)
     },
     "connect"(state, socketId) {
-        this.playerId = socketId;
+        state.playerId = socketId;
         console.log("Connected to socket", socketId);
     },
     'restartGame'(state) {
@@ -39,6 +44,11 @@ mutations : {
         state.adversaryChoice = null;
         state.playerChoice = null;
         state.restartGame = true;
+    },
+    'generateMultiplayerRoom'(state, roomId) {
+        state.adversaryConnectedState = "pending";
+        state.multiplayerRoomId = roomId;
+        state.socket.emit('create', roomId);
     }
 },
 actions : {
@@ -53,6 +63,11 @@ actions : {
     },
     "restartGame"(context) {
         context.commit("restartGame");
+    },
+    "generateMultiplayerRoom"(context) {
+        const roomId = uuid();
+        context.commit("generateMultiplayerRoom", roomId);
+        return roomId;
     }
 }
 })

@@ -9,11 +9,18 @@
         </div>
 
         <div class="rules-bnt-container">
-            <div v-if="!multiplayer">
+            <div v-if="!multiplayerMode">
                 <Button
-                    label="Multiplayer"
+                    label="Multiplayer Mode"
                     variant="secondary"
                     :handle-click="handleLaunchMultiplayer"
+                />
+            </div>
+            <div v-if="multiplayerMode">
+                <Button
+                    label="Single Mode"
+                    variant="secondary"
+                    :handle-click="handleLaunchSinglePlayer"
                 />
             </div>
             <Button
@@ -23,14 +30,32 @@
             />
         </div>
 
-        <div v-if="multiplayer">
+        <!-- <div v-if="multiplayerMode">
             <p>You want to create a multiplayer room ?</p>
             <p>Pass this link to the second player</p>
-            <p>http://localhost:8080?multiplayerRoom={{multiplayerRoom}}</p>
-        </div>
+            <p>http://localhost:8080?multiplayerRoom={{multiplayerRoomId}}</p>
+
+            <div v-if="multiplayerMode && !adversaryConnected">
+                <p style="font-size: 3rem;">WAITING FOR OTHER PLAYER</p>
+            </div>
+            <div v-if="multiplayerMode && adversaryConnected">
+                <p style="font-size: 3rem; color: red;">OTHER PLAYER HERE</p>
+            </div>
+        </div> -->
+
+        <MultiplayerModal
+            :open="isMultiplayerModalOpen"
+            title="Launch a multiplayer game"
+        />
+
+        <KitWonModal
+            :open="kittyPlayed"
+            title="Happy Birthday !!!!"
+            :won="playerWon"
+        />
 
         <RulesPage
-            :is-open="isModalOpen"
+            :is-open="isRuleModalOpen"
             :handle-close="handleToggleClick"
         />
         <div class="attribution">
@@ -41,14 +66,14 @@
 </template>
 
 <script>
-    import { uuid } from 'uuidv4';
     import io from 'socket.io-client';
     import Button from './components/Button.vue';
     import Header from './components/Header.vue';
     import RulesPage from './components/RulesPage.vue';
     import GameArea from './components/GameArea.vue';
-    // import { store } from "./store";
-import { mapState } from 'vuex';
+    import MultiplayerModal from './components/MultiplayerModal.vue';
+    import KitWonModal from './components/KitWonModal';
+    import { mapState } from 'vuex';
 
     export default {
         name: 'App',
@@ -56,31 +81,37 @@ import { mapState } from 'vuex';
             Header,
             RulesPage,
             Button,
-            GameArea
+            GameArea,
+            MultiplayerModal,
+            KitWonModal
         },
         sockets: {
-            connect: function () {
-                console.log("new socket connected");
-            },
-            success: function(socketid) {
+            success(socketid) {
                 this.$store.dispatch("connect", socketid);
             },
-            playerChoice: function (data) {
+            playerChoice(data) {
+                console.log("coucou", data)
                 if (data.user !== this.$store.playerId) {
                     this.$store.dispatch("adversaryChoice", data.choice);
                 }
             },
-            restartGame: function () {
+            restartGame() {
                 this.$store.state.restartGame = true;
+            },
+            adversaryConnected() {
+                console.log("adversary connected");
+                this.$store.state.adversaryConnected = "connected";
+            },
+            createdRoom() {
+                console.log("YEAAAH");
             }
         },
         computed: {
-            ...mapState({
-                store: state => state
-            })
+            ...mapState(["multiplayerMode", "multiplayerRoomId", "adversaryConnected", "kittyPlayed", "playerWon"])
         },
         data: () => ({
-                isModalOpen: false,
+                isRuleModalOpen: false,
+                isMultiplayerModalOpen: false,
                 score: 0,
                 playerId: null,
                 multiplayer: false,
@@ -101,29 +132,33 @@ import { mapState } from 'vuex';
                 });
                 console.log(getVars);
                 if (getVars.multiplayerRoom) {
-                    this.multiplayerRoom = getVars.multiplayerRoom;
-                    this.socket.emit('connect', this.multiplayerRoom);
+                    this.$store.multiplayerRoomId = getVars.multiplayerRoom;
+                    this.$store.multiplayerMode = true;
+                    this.socket.emit('joinRoom', getVars.multiplayerRoom);
                 }
             }
         },
-        beforeDestroy: function () {
-
-        },
         methods: {
             handleToggleClick: function () {
-                this.isModalOpen = !this.isModalOpen;
+                this.isRuleModalOpen = !this.isRuleModalOpen;
             },
             setScore: function (increase) {
                 this.score = increase ? this.score + 1 : this.score > 0 ? this.score - 1 : this.score;
             },
             handleLaunchMultiplayer: function() {
-                this.multiplayer = true;
+                this.$store.state.multiplayerMode = true;
                 this.generateMultiplayerRoom();
             },
             generateMultiplayerRoom: function() {
-                const roomId = uuid();
-                this.socket.emit('create', roomId);
-                this.multiplayerRoom = roomId;
+                // const roomId = uuid();
+                // this.socket.emit('create', roomId);
+                // this.$store.state.multiplayerRoomId = roomId;
+                this.$store.dispatch("generateMultiplayerRoom");
+            },
+            handleLaunchSinglePlayer: function() {
+                this.$store.state.multiplayerRoomId = null;
+                // this.socket.emit('disconnect');
+                this.$store.state.multiplayerMode = false;
             }
         }
     }

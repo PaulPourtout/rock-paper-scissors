@@ -2,7 +2,11 @@
     <button
         v-on:click="handleClick"
         class="button"
-        v-bind:class="{primary: variant === 'primary', secondary: variant === 'secondary'}"
+        v-bind:class="{
+            primary: variant === 'primary'||variant === 'dark',
+            secondary: variant === 'secondary',
+            dark: variant === 'dark'
+        }"
     >
         {{label}}
     </button>
@@ -16,7 +20,7 @@
             variant: {
                 default: "secondary",
                 validator: function(value) {
-                    return ["primary", "secondary"].indexOf(value) !== -1
+                    return ["primary", "secondary", "dark"].indexOf(value) !== -1
                 }
             },
             handleClick: Function
@@ -58,6 +62,15 @@
     .secondary:hover {
         color: hsl(229, 25%, 31%);
         background-color: #FFF;
+    }
+
+    .dark {
+        background: hsl(214, 47%, 23%);
+        color: #FFF;
+    }
+
+    .dark:hover {
+        background: hsl(214, 47%, 93%);
     }
 
     @media screen and (min-width: 900px) {

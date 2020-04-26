@@ -217,7 +217,7 @@
         }
 
          .button img {
-            width: 3.5rem;
+            width: 4.5rem;
         }
 
         .pulse-effect {
@@ -243,7 +243,7 @@
         }
 
         .button img {
-            width: 5rem;
+            width: 6.5rem;
         }
 
         .pulse-effect {
